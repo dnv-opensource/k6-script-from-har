@@ -2,9 +2,14 @@
   "name": "k6scriptfromhar",
   "version": "1.0.0",
   "description": "helper utility to generate k6 test script given a .har file",
-  "main": "index.js",
+  "bin": {
+    "k6scriptfromhar": "bin/k6scriptfromhar.js"
+  },
+  "files": [
+    "bin/**/*.*",
+    "src/**/*.*"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",

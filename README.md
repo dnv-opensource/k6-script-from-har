@@ -1,20 +1,20 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# k6-script-from-har
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+`k6-script-from-har` is a powerful tool designed to simplify the process of performance testig. The primary objective of this project is to generate k6 test scirpts from HTTP Archive (`.har`) files. These `.har` files contain information about HTTP requests and responses, which can be used to simulate network traffic and test the performance of your web application.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+# Installation
+``` sh
+npm install --save k6-script-from-har
+```
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+# Usage
+TODO: Brief explanation how to use it.
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+# Initialization
+TODO: Describe the configuration and steps to use it.
+
+# Log output
+TODO: Add example of the results.
+
+# Advanced usage
+TODO: Describe and show how to build your code and run the tests.

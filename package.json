@@ -1,0 +1,21 @@
+{
+  "name": "k6scriptfromhar",
+  "version": "1.0.0",
+  "description": "helper utility to generate k6 test script given a .har file",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://dnvgl-one.visualstudio.com/DefaultCollection/Electric%20Grid%20Ecosystem/_git/k6ScriptFromHar"
+  },
+  "keywords": [
+    "k6",
+    "har",
+    "script",
+    "generate"
+  ],
+  "author": "DNV",
+  "license": "MIT"
+}

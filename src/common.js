@@ -1,9 +1,9 @@
 import http from 'k6/http';
 import { check } from 'k6';
 
-let access_token;
+export const state = {};
 export function httpRequest(method, url, body, params = {}) {
-    if (access_token) params.headers = Object.assign({ "Authorization": 'Bearer ' + access_token }, params.headers ? params.headers : {});
+    if (state.access_token) params.headers = Object.assign({ "Authorization": 'Bearer ' + state.access_token }, params.headers ? params.headers : {});
     if (method === 'POST')
         params.headers = Object.assign({ "Content-Type": "application/json-patch+json", "Accept": "*/*" }, params.headers ? params.headers : {});
         params.timeout = (params.timeout !== undefined ? params.timeout : 600000); //default to 10m timeout instead of 60s implicit default
@@ -21,8 +21,8 @@ export function httpRequest(method, url, body, params = {}) {
     check(res, checks);
 }
 
-export function ensureLoggedIn(username, password, url) {
-    if (access_token) return;
+export function _ensureLoggedIn(username, password, url) {
+    if (state.access_token) return;
 
     const res = http.post(url.replace('${username}', username).replace('${password}', password));
     if (!(res.status >= 200 && res.status < 400)){
@@ -30,7 +30,7 @@ export function ensureLoggedIn(username, password, url) {
         throw 'could not log in';
     }
 
-    access_token = (res.json()).access_token;
+    state.access_token = (res.json()).access_token;
     console.log('----------- LOG IN SUCESSFUL -----------');
 }
 
@@ -39,5 +39,5 @@ export function commonSetup() {
 	if (!__ENV.AT_PASSWORD) console.warn('environment variable `AT_PASSWORD` not specified');
 	if (!__ENV.AT_AUTH_URL) console.warn('environment variable `AT_AUTH_URL` not specified');
     if (!__ENV.AT_USERNAME || !__ENV.AT_PASSWORD || !__ENV.AT_AUTH_URL) return;
-	ensureLoggedIn(__ENV.AT_USERNAME, __ENV.AT_PASSWORD, __ENV.AT_AUTH_URL);
+	_ensureLoggedIn(__ENV.AT_USERNAME, __ENV.AT_PASSWORD, __ENV.AT_AUTH_URL);
 }

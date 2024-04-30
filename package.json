@@ -1,6 +1,6 @@
 {
   "name": "k6scriptfromhar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "helper utility to generate k6 test script given a .har file",
   "bin": {
     "k6scriptfromhar": "bin/k6scriptfromhar.js"

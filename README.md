@@ -38,7 +38,7 @@ Manually
 
 Playwright
 - Given a playwright workflow test
-- Toggle on `recordHAR` on browser object at start of test [documentation: playwright record har](https://playwright.dev/docs/api/class-browser#browser-new-context-option-record-har)
+- Toggle on `recordHAR` on browser object at start of test [documentation: playwright record har](https://playwright.dev/docs/mock#recording-a-har-file)
 - This file can be piped into this script and keep your performance tests up-to-date with the workflow covered by the automated test.
 
 

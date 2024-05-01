@@ -1,10 +1,15 @@
 # k6-script-from-har
 
-`k6-script-from-har` is a powerful tool designed to simplify the process of performance testig. The primary objective of this project is to generate k6 test scirpts from HTTP Archive (`.har`) files. These `.har` files contain information about HTTP requests and responses, which can be used to simulate network traffic and test the performance of your web application.
+Dead simple k6 test generator.  
+Given a har file, this script scrapes and generates idiomatic k6 test code.  
+
+Create a .har file by opening a browser's network tab, navigate, click `export HAR` button. Or can be combined with tools like `Playwright` to have automated tests generate the .har file.  
+
+Includes `testTemplate.js` and `testCommon.js` as a starting factoring of shared structure. May be modified after install to your liking. Includes example for getting Auth bearer tokens and attaching them to requests.
 
 # Installation
 ``` sh
-npm install --save k6-script-from-har
+npm install --save-dev k6-script-from-har
 ```
 
 # Usage

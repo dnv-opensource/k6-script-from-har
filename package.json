@@ -1,9 +1,9 @@
 {
-  "name": "@dnvgl/k6scriptfromhar",
+  "name": "k6-script-from-har",
   "version": "1.0.0",
-  "description": "helper utility to generate k6 test script given a .har file",
+  "description": "k6 script from har - dead simple k6 test generator",
   "bin": {
-    "k6scriptfromhar": "bin/k6scriptfromhar.js"
+    "k6-script-from-har": "bin/k6scriptfromhar.js"
   },
   "files": [
     "bin/**/*.*",

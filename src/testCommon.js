@@ -21,10 +21,10 @@ export function httpRequest(method, url, body, params = {}) {
     check(res, checks);
 }
 
-export function _ensureLoggedIn(username, password, url) {
+export function _ensureLoggedIn(url) {
     if (state.access_token) return;
 
-    const res = http.post(url.replace('${username}', username).replace('${password}', password));
+    const res = http.post(url);
     if (!(res.status >= 200 && res.status < 400)){
         console.error(res.status_text);
         throw 'could not log in';
@@ -35,9 +35,6 @@ export function _ensureLoggedIn(username, password, url) {
 }
 
 export function commonSetup() {
-    if (!__ENV.AT_USERNAME) console.warn('environment variable `AT_USERNAME` not specified');
-	if (!__ENV.AT_PASSWORD) console.warn('environment variable `AT_PASSWORD` not specified');
-	if (!__ENV.AT_AUTH_URL) console.warn('environment variable `AT_AUTH_URL` not specified');
-    if (!__ENV.AT_USERNAME || !__ENV.AT_PASSWORD || !__ENV.AT_AUTH_URL) return;
-	_ensureLoggedIn(__ENV.AT_USERNAME, __ENV.AT_PASSWORD, __ENV.AT_AUTH_URL);
+	if (!__ENV.AT_AUTH_URL) { console.warn('environment variable `AT_AUTH_URL` not specified'); return; }
+	_ensureLoggedIn(__ENV.AT_AUTH_URL);
 }

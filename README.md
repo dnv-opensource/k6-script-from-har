@@ -27,7 +27,7 @@ npx k6-script-from-har createTimeEntryWorkflow.har tests/createTimeEntryWorkflow
 
 run the test
 ``` sh
-npx k6 run tests/createTimeEntryWorkflow.js
+k6 run tests/createTimeEntryWorkflow.js
 ```
 
 # Har file creation
@@ -43,5 +43,15 @@ Playwright
 
 
 # Advanced usage
-`testTemplate.js` and `testCommon.js` are used by the script.   
-These files can be modified for your specific purposes e.g. hardcoded auth information, etc.
+`testCommon.js` will fetch an Authorization Bearer token, and attach the header automatically on all `httpRequest` if the environment variable `AT_AUTH_URL`  is set.  
+note: to set an environment variable in a command prompt wrap the command with double quotes if the value includes & characters.  
+e.g. `set "AT_AUTH_URL=https://your.auth.url/oauth2/v2.0/token?username=myUserName&password=myPassword&etc_etc_etc"`
+
+the following variables are also available
+* `AT_VU_COUNT` - defaults to 15
+* `AT_ITERATIONS` - defaults to AT_VU_COUNT * 3
+*  k6 reference details [here](https://grafana.com/docs/k6/latest/using-k6/k6-options/how-to/#where-to-set-options)
+by default the testTemplate defines options to run a constant number of VUs a given number of iterations. More executor details (here)[https://grafana.com/docs/k6/latest/using-k6/scenarios/executors/]
+
+`testTemplate.js` and `testCommon.js` are used by the script.  
+These files can be modified for your specific purposes e.g. hardcoded auth information, set the default iterations, etc.

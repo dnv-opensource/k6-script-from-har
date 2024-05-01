@@ -10,6 +10,7 @@
     "src/**/*.*"
   ],
   "scripts": {
+    "postinstall": "node -e \"if (process.env.INIT_CWD === process.cwd()) process.exit(); const fs = require('node:fs'); const dest = process.env.INIT_CWD; fs.readdirSync('src').forEach(file => { try { fs.copyFileSync('src/' + file, dest + '/' + file, fs.constants.COPYFILE_EXCL); } catch(e) { if (e.code !== 'EEXIST') throw e; } });\""
   },
   "repository": {
     "type": "git",

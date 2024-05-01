@@ -24,9 +24,9 @@ var allRequests = har.log.entries
 const k6TestCodeLines = allRequests.map(r => `httpRequest('${r.method}','${r.url}'${r.postData ? ', ' + JSON.stringify(JSON.parse(r.postData.text)) : ''});`);
 const testBody = k6TestCodeLines.join('\n\t');
 
-var testBase = fsSync.readFileSync("./node_modules/k6scriptfromhar/src/testBase.js", {encoding: 'utf8'});
-const testScript = testBase.replace('${testBody}', testBody);
+var testTemplate = fsSync.readFileSync("./node_modules/k6scriptfromhar/src/testTemplate.js", {encoding: 'utf8'});
+const testScript = testTemplate.replace('${testBody}', testBody);
 
 fsSync.writeFileSync(args[1], testScript);
 const destPath = path.dirname(args[1]);
-if (!fsSync.existsSync(path.join(destPath, 'common.js'))) fsSync.copyFileSync('./node_modules/k6scriptfromhar/src/common.js', path.join(destPath, 'common.js'));
+if (!fsSync.existsSync(path.join(destPath, 'testCommon.js'))) fsSync.copyFileSync('./node_modules/k6scriptfromhar/src/testCommon.js', path.join(destPath, 'testCommon.js'));

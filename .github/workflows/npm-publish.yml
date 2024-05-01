@@ -28,6 +28,7 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0.9.7
         with:
           useConfigFile: true
+      - run: npm version --new-version $GITVERSION_SEMVER --no-git-tag-version
       - run: npm ci
       - run: npm publish --access public
         env:

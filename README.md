@@ -78,7 +78,9 @@ The included testCommon.js and testTemplate.js files include helpers and reasona
 * includes an `options` block with a default of a fixed number of concurrent users (VUs) and a fixed number of iterations (per VU).
     * This was a good fit for us since our workflows were long running (10+ seconds), and we try testing our infrastructure with different fixed numbers of users, and ensure the infrastructure didn't fail or slow down terribly in any spots.
     * We used a fixed number of iterations (per VU) since the average times were skewed lower when iterations were forcably exited because they took beyond the grace period.
-    * Review the contents of testTemplate.js for more details
+* includes handleSummary with custom junit reporter that provides duration and good visibility around call failures
+    * we consume this in Azure Pipelines with the `PublishTestResults@2` task, and pass `testResultsFiles` of `*.junit.xml`
+* Review the contents of testTemplate.js for more details
 
 
 `testCommon.js`
@@ -91,7 +93,7 @@ The included testCommon.js and testTemplate.js files include helpers and reasona
 ## Example code output
 
 ```ts
-import { httpRequest, commonSetup, state } from '/testCommon.js';
+import { httpRequest, commonSetup, state } from '/testCommon.js'; //hack to reference the executing folder without needing relative path
 
 const given_vus = __ENV.AT_VU_COUNT === undefined ? 15 : __ENV.AT_VU_COUNT;
 const given_iterations = __ENV.AT_ITERATIONS === undefined ? given_vus * 3 : __ENV.AT_ITERATIONS;
@@ -111,6 +113,4 @@ export default function (setup_state) {
 	httpRequest('GET', 'https://status.k6.io/api/v2/status.json');
 	httpRequest('GET', 'https://k6.io/data/jobs-positions.json');
 }
-
-
 ```

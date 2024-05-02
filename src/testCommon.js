@@ -47,15 +47,15 @@ export function commonSetup() {
 }
 
 export function jUnitIterationDuration(data, name) {
-	let avgDuration = data.metrics.iteration_duration.values.avg;
+	let avgDurationSeconds = data.metrics.iteration_duration.values.avg / 1000.0;
 	let failures = data.root_group.checks.reduce((acc, x) => acc + x.fails, 0) == 0 ? 0 : 1;
-    let messages = data.root_group.checks.filter(x => x.fails > 0).map(x => `${x.fails}/${data.root_group.checks.find(c => c.name === x.name.split(': ')[0]).passes} failed: ${x.name}`);
+    let failureMessages = data.root_group.checks.filter(x => x.fails > 0).map(x => `${x.fails}/${data.root_group.checks.find(c => c.name === x.name.split(': ')[0]).passes} failed: ${x.name}`);
 	
 return `
 <testsuites id="" name="" tests="1" failures="${failures}">
-	<testsuite name="" tests="1" failures="${failures}" skipped="0" time="${avgDuration}" errors="0">
-		<testcase name="${name}" classname="${name}" time="${avgDuration}">
-            ${messages.length === 0 ? '' : '<failure message="Some calls failed">\n' + messages.join("\n") + '\n\t\t</failure>'}
+	<testsuite name="" tests="1" failures="${failures}" skipped="0" time="${avgDurationSeconds}" errors="0">
+		<testcase name="${name}" classname="${name}" time="${avgDurationSeconds}">
+            ${failureMessages.length === 0 ? '' : '<failure message="Calls failed. See details below.">\n' + failureMessages.join("\n") + '\n\t\t</failure>'}
 		</testcase>
 	</testsuite>
 </testsuites>

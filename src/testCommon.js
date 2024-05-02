@@ -10,7 +10,7 @@ export function httpRequest(method, url, body, params = {}) {
     if (method === 'POST')
         params.timeout = (params.timeout !== undefined ? params.timeout : 600000); //default to 10m timeout instead of 60s implicit default
 
-    const res = http.request(method, url, JSON.stringify(body), params);
+    const res = http.request(method, url, body, params);
 
     const isSuccessCode = (res.status >= 200 && res.status < 400);
     if (!isSuccessCode) {

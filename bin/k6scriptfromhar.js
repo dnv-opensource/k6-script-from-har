@@ -21,7 +21,7 @@ var allRequests = har.log.entries
 .filter(e => e._resourceType === 'fetch')
 .map(e => e.request);
 
-const k6TestCodeLines = allRequests.map(r => `httpRequest('${r.method}','${r.url}'${r.postData ? ', ' + JSON.stringify(JSON.parse(r.postData.text)) : ''});`);
+const k6TestCodeLines = allRequests.map(r => `httpRequest('${r.method}', '${r.url}'${(!r.postData ? '' : `, ${JSON.stringify(r.postData.text)}, { headers: {'Content-Type': '${r.postData.mimeType}'} }`)});`);
 const testBody = k6TestCodeLines.join('\n\t');
 
 var testTemplate = fsSync.readFileSync("./testTemplate.js", {encoding: 'utf8'});

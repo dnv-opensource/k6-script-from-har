@@ -1,11 +1,24 @@
 # k6-script-from-har
 
 Dead simple k6 test generator.  
-Given a har file, this script scrapes and generates idiomatic k6 test code.  
+Given a har file, this script parses and generates cleanly factored k6 test code.  
+[Only `fetch` calls]  
 
-Create a .har file by opening a browser's network tab, navigate, click `export HAR` button. Or can be combined with tools like `Playwright` to have automated tests generate the .har file.  
+This is an alternative to the [har-to-k6](https://k6.io/docs/test-authoring/create-tests-from-recordings/using-the-har-converter/
+) converter which in our experience created messy generated "write only" code that required a lot of clean up every time we used it.
 
-Includes `testTemplate.js` and `testCommon.js` as a starting factoring of shared structure. May be modified after install to your liking. Includes example for getting Auth bearer tokens and attaching them to requests.
+## Who this is for
+We use this for **workflow** load testing of a backend heavy SPA with 10s or 100s of users.
+
+We wanted to measure
+1. Realistic load characteristics (real-world usage conditions)
+2. Workflow completion time
+    * baseline time for one virtual user
+    * how far can we push virtual user count until the time is unacceptable (e.g. 20s for a multi-page workflow)
+3. Infrastructure reliability
+    * at how many virtual users does something in the infrastructure break (follow up - what broke, how do we harden our infra)
+
+The record and playback approach was a good fit for us. We also wanted basic checks in place e.g. failure response status should show up red instead of green in results.
 
 ## Installation
 Ensure k6 is [installed](https://grafana.com/docs/k6/latest/set-up/install-k6/)
@@ -75,3 +88,29 @@ The included testCommon.js and testTemplate.js files include helpers and reasona
         * without these checks the performance tests could appear to succeed even though individual calls were beginning to fail, or take a long time.
     * Review the contents of testCommon.js for more details
 
+## Example code output
+
+```ts
+import { httpRequest, commonSetup, state } from '/testCommon.js';
+
+const given_vus = __ENV.AT_VU_COUNT === undefined ? 15 : __ENV.AT_VU_COUNT;
+const given_iterations = __ENV.AT_ITERATIONS === undefined ? given_vus * 3 : __ENV.AT_ITERATIONS;
+
+export const options = {
+	vus: given_vus,
+	iterations: given_iterations,
+};
+
+export function setup() {
+	commonSetup();
+	return state;
+}
+
+export default function (setup_state) {
+	Object.assign(state, setup_state);
+	httpRequest('GET', 'https://status.k6.io/api/v2/status.json');
+	httpRequest('GET', 'https://k6.io/data/jobs-positions.json');
+}
+
+
+```

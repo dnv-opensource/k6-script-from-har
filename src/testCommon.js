@@ -22,8 +22,9 @@ export function httpRequest(method, url, body, params = {}) {
     
     //some reasonable default checks, feel free to modify
     const checks = {};
-    checks[url + ' status ' + res.status] = r => isSuccessCode;
-    checks[url + ' timing < 10s'] = r => r.timings.duration < 10000;
+    checks[url] = r => true; //used to count number of calls to track percentage of failures below in jUnitIterationDuration
+    checks[url + ': status ' + res.status] = r => isSuccessCode;
+    checks[url + ': timing < 10s'] = r => r.timings.duration < 10000;
     check(res, checks);
 }
 
@@ -37,10 +38,26 @@ export function _ensureLoggedIn(url) {
     }
 
     state.access_token = (res.json()).access_token;
-    console.log('----------- LOG IN SUCESSFUL -----------');
+    console.log('----------- LOG IN SUCCESSFUL -----------');
 }
 
 export function commonSetup() {
-	if (!__ENV.AT_AUTH_URL) { console.warn('environment variable `AT_AUTH_URL` not specified'); return; }
+	if (!__ENV.AT_AUTH_URL) { console.info('environment variable `AT_AUTH_URL` not specified, skipping login'); return; }
 	_ensureLoggedIn(__ENV.AT_AUTH_URL);
+}
+
+export function jUnitIterationDuration(data, name) {
+	let avgDuration = data.metrics.iteration_duration.values.avg;
+	let failures = data.root_group.checks.reduce((acc, x) => acc + x.fails, 0) == 0 ? 0 : 1;
+    let messages = data.root_group.checks.filter(x => x.fails > 0).map(x => `${x.fails}/${data.root_group.checks.find(c => c.name === x.name.split(': ')[0]).passes} failed: ${x.name}`);
+	
+return `
+<testsuites id="" name="" tests="1" failures="${failures}">
+	<testsuite name="" tests="1" failures="${failures}" skipped="0" time="${avgDuration}" errors="0">
+		<testcase name="${name}" classname="${name}" time="${avgDuration}">
+            ${messages.length === 0 ? '' : '<failure message="Some calls failed">\n' + messages.join("\n") + '\n\t\t</failure>'}
+		</testcase>
+	</testsuite>
+</testsuites>
+`;
 }

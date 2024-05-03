@@ -24,7 +24,7 @@ The record and playback approach was a good fit for us. We also wanted basic che
 Ensure k6 is [installed](https://grafana.com/docs/k6/latest/set-up/install-k6/)
 
 ``` sh
-npm install --save-dev k6-script-from-har
+npm install --save-dev @dnvgl/k6-script-from-har
 ```
 > note: files `testTemplate.js` and `testCommon.js` will be copied into repository root post install
 these should be committed with the repo

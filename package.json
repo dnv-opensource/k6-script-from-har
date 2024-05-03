@@ -1,5 +1,5 @@
 {
-  "name": "k6-script-from-har",
+  "name": "@dnvgl/k6-script-from-har",
   "version": "1.0.0",
   "description": "k6 script from har - dead simple k6 test generator",
   "bin": {
@@ -20,7 +20,8 @@
     "k6",
     "har",
     "script",
-    "generate"
+    "generate",
+    "dnv"
   ],
   "author": "DNV",
   "license": "MIT"
